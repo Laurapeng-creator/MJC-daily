@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "env": {
+    "MINIMAX_API_KEY": "@minimax-api-key",
+    "EDIT_PASSWORD": "mjcdaily888"
+  },
+  "routes": [
+    { "src": "/(.*)", "dest": "/$1" }
+  ]
+}
