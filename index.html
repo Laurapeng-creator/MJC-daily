@@ -1,0 +1,1343 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>新传考研每日热点</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #fafaf8;
+  --surface: #ffffff;
+  --border: rgba(0,0,0,0.08);
+  --border-mid: rgba(0,0,0,0.14);
+  --text-primary: #111110;
+  --text-secondary: #555552;
+  --text-tertiary: #999994;
+  --text-muted: #bbbbb6;
+  --accent: #111110;
+  --tag-bg: #f4f4f2;
+  --card-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  --bottom-bg: rgba(250,250,248,0.92);
+}
+
+[data-theme="dark"] {
+  --bg: #111110;
+  --surface: #1c1c1a;
+  --border: rgba(255,255,255,0.08);
+  --border-mid: rgba(255,255,255,0.14);
+  --text-primary: #fafaf8;
+  --text-secondary: #aaaaa6;
+  --text-tertiary: #666662;
+  --text-muted: #444440;
+  --accent: #fafaf8;
+  --tag-bg: #252522;
+  --card-shadow: 0 1px 3px rgba(0,0,0,0.3);
+  --bottom-bg: rgba(17,17,16,0.92);
+}
+
+body {
+  font-family: 'DM Sans', 'PingFang SC', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text-primary);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  transition: background 0.2s, color 0.2s;
+}
+
+.page {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 24px 100px;
+}
+
+/* NAV */
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28px 0 22px;
+  border-bottom: 0.5px solid var(--border);
+  margin-bottom: 28px;
+}
+
+.nav-brand { display: flex; align-items: baseline; gap: 8px; }
+
+.nav-title {
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.nav-date { font-size: 12px; color: var(--text-muted); letter-spacing: 0.02em; }
+
+.nav-stat { font-size: 12px; color: var(--text-tertiary); margin-left: 4px; }
+
+.nav-actions { display: flex; gap: 4px; }
+
+.nav-btn {
+  width: 32px; height: 32px;
+  border: none; background: none; cursor: pointer;
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-tertiary);
+  transition: background 0.15s, color 0.15s;
+}
+.nav-btn:hover { background: var(--tag-bg); color: var(--text-secondary); }
+.nav-btn svg { width: 17px; height: 17px; stroke-width: 1.5; }
+
+/* API KEY BAR */
+.apikey-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: var(--tag-bg);
+  border: 0.5px solid var(--border);
+  border-radius: 10px;
+  margin-bottom: 20px;
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+
+.apikey-bar input {
+  flex: 1;
+  border: none; background: none;
+  font-size: 12px;
+  color: var(--text-primary);
+  outline: none;
+  font-family: inherit;
+}
+
+.apikey-bar input::placeholder { color: var(--text-muted); }
+
+.apikey-bar button {
+  font-size: 11px;
+  color: var(--surface);
+  background: var(--text-primary);
+  border: none; border-radius: 5px;
+  padding: 3px 10px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: opacity 0.15s;
+}
+.apikey-bar button:hover { opacity: 0.8; }
+.apikey-bar button:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.apikey-status { font-size: 11px; color: var(--text-tertiary); white-space: nowrap; }
+.apikey-status.ok { color: #4a9e6a; }
+
+/* FILTERS */
+.filter-section { margin-bottom: 28px; }
+
+.filter-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
+.filter-row:last-child { margin-bottom: 0; }
+
+.pill {
+  font-size: 12px; padding: 4px 12px;
+  border: 0.5px solid var(--border-mid); border-radius: 20px;
+  cursor: pointer; color: var(--text-secondary);
+  background: none; transition: all 0.15s; letter-spacing: 0.01em;
+}
+.pill:hover { border-color: rgba(0,0,0,0.25); color: var(--text-primary); }
+[data-theme="dark"] .pill:hover { border-color: rgba(255,255,255,0.25); color: var(--text-primary); }
+
+.pill.active {
+  background: var(--text-primary); color: #fff; border-color: var(--text-primary);
+}
+[data-theme="dark"] .pill.active { color: var(--bg); }
+
+.pill.topic { font-size: 11px; padding: 3px 10px; color: var(--text-tertiary); }
+.pill.topic.active { background: var(--text-primary); color: #fff; }
+[data-theme="dark"] .pill.topic.active { color: var(--bg); }
+.pill.topic.has-more { color: var(--text-muted); cursor: default; }
+
+/* TOPIC TAGS CLOUD */
+.topic-cloud { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+
+/* LOADING */
+.loading-wrap { text-align: center; padding: 48px 0; color: var(--text-muted); font-size: 13px; }
+.loading-spinner {
+  width: 28px; height: 28px;
+  border: 2px solid var(--border);
+  border-top-color: var(--text-tertiary);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  margin: 0 auto 12px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ERROR */
+.error-msg {
+  text-align: center; padding: 32px 0;
+  font-size: 13px; color: var(--text-tertiary);
+}
+.error-msg button {
+  margin-top: 10px; font-size: 12px;
+  color: var(--text-secondary);
+  border: 0.5px solid var(--border-mid); border-radius: 6px;
+  padding: 5px 14px; cursor: pointer; background: none;
+  transition: all 0.15s;
+}
+.error-msg button:hover { border-color: rgba(0,0,0,0.25); }
+
+/* CARDS */
+.feed { display: flex; flex-direction: column; gap: 8px; }
+
+.card {
+  background: var(--surface);
+  border: 0.5px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.card:hover { border-color: var(--border-mid); }
+.card.expanded { border-color: rgba(0,0,0,0.16); }
+[data-theme="dark"] .card.expanded { border-color: rgba(255,255,255,0.16); }
+
+.card-header {
+  display: flex; align-items: flex-start;
+  justify-content: space-between; gap: 16px;
+  padding: 18px 22px; cursor: pointer; user-select: none;
+}
+
+.card-meta { font-size: 11px; color: var(--text-muted); margin-bottom: 5px; letter-spacing: 0.02em; }
+.card-meta .rank { font-variant-numeric: tabular-nums; margin-right: 6px; color: var(--text-tertiary); }
+.card-meta .platform { margin-right: 8px; }
+
+.card-title {
+  font-size: 15px; font-weight: 500; line-height: 1.45;
+  margin-bottom: 8px;
+}
+
+.inline-tags { display: flex; flex-wrap: wrap; }
+.inline-tag { font-size: 11px; color: var(--text-muted); }
+.inline-tag::after { content: "·"; margin: 0 5px; color: var(--text-muted); }
+.inline-tag:last-child::after { display: none; }
+
+.chevron {
+  flex-shrink: 0; width: 18px; height: 18px;
+  color: var(--text-muted); margin-top: 2px;
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.card.expanded .chevron { transform: rotate(180deg); }
+
+/* CARD BODY */
+.card-body { display: none; padding: 0 22px 20px; }
+.card.expanded .card-body { display: block; }
+
+.divider { height: 0.5px; background: var(--border); margin-bottom: 18px; }
+
+.section-label {
+  font-size: 10px; font-weight: 500; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--text-muted); margin-bottom: 12px;
+}
+
+.points-list { list-style: none; margin-bottom: 16px; }
+
+.point-item {
+  display: flex; gap: 12px; padding: 9px 0;
+  border-bottom: 0.5px solid var(--border);
+  align-items: flex-start;
+}
+.point-item:last-child { border-bottom: none; }
+
+.point-num { font-size: 11px; color: var(--text-muted); min-width: 14px; padding-top: 1px; font-variant-numeric: tabular-nums; }
+.point-text { font-size: 13px; color: var(--text-secondary); line-height: 1.7; }
+
+.takeaway-box {
+  background: var(--tag-bg); border-radius: 8px;
+  padding: 14px 16px; margin-bottom: 16px;
+}
+.takeaway-label { font-size: 10px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; }
+.takeaway-text { font-size: 13px; color: var(--text-secondary); line-height: 1.75; }
+.takeaway-text strong { color: var(--text-primary); font-weight: 500; }
+
+/* CARD FOOTER */
+.card-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 14px; border-top: 0.5px solid var(--border); }
+.footer-links { display: flex; gap: 14px; }
+.footer-link {
+  font-size: 12px; color: var(--text-muted); cursor: pointer;
+  display: flex; align-items: center; gap: 4px;
+  transition: color 0.15s; text-decoration: none;
+}
+.footer-link:hover { color: var(--text-secondary); }
+.footer-link svg { width: 13px; height: 13px; stroke-width: 1.5; }
+
+.export-btn {
+  font-size: 12px; color: var(--text-secondary);
+  border: 0.5px solid var(--border-mid); border-radius: 6px;
+  padding: 5px 14px; cursor: pointer; background: none; transition: all 0.15s;
+}
+.export-btn:hover { border-color: rgba(0,0,0,0.25); color: var(--text-primary); }
+[data-theme="dark"] .export-btn:hover { border-color: rgba(255,255,255,0.25); }
+
+/* CHECKBOX */
+.card-check {
+  width: 16px; height: 16px;
+  border: 0.5px solid var(--border-mid); border-radius: 4px;
+  flex-shrink: 0; margin-top: 3px;
+  cursor: pointer; display: flex;
+  align-items: center; justify-content: center; transition: all 0.15s;
+}
+.card-check.checked { background: var(--text-primary); border-color: var(--text-primary); }
+[data-theme="dark"] .card-check.checked { color: var(--bg); }
+.card-check.checked svg { display: block; }
+.card-check svg { display: none; width: 10px; height: 10px; stroke: white; stroke-width: 2.5; }
+.card-check.checked svg path { stroke: var(--bg); }
+
+/* AI STATUS BADGE */
+.ai-badge {
+  font-size: 10px; padding: 2px 7px;
+  border-radius: 10px; background: var(--tag-bg);
+  color: var(--text-tertiary); border: 0.5px solid var(--border);
+  white-space: nowrap;
+}
+.ai-badge.generating { color: #8a6d3b; background: #fef9ec; border-color: #f5e5c0; }
+[data-theme="dark"] .ai-badge.generating { color: #d4a855; background: #2a2416; border-color: #4a3c20; }
+.ai-badge.done { color: #4a9e6a; background: #f0faf3; border-color: #c2e8ce; }
+[data-theme="dark"] .ai-badge.done { color: #6bc48a; background: #162218; border-color: #2a4a30; }
+.ai-badge.failed { color: #c0392b; background: #fdf0ef; border-color: #f5c6c2; }
+[data-theme="dark"] .ai-badge.failed { color: #e06060; background: #2a1616; border-color: #4a2020; }
+
+/* EDIT MODE */
+.edit-input {
+  width: 100%; font-size: 13px; color: var(--text-secondary);
+  border: 0.5px solid var(--border-mid); border-radius: 7px;
+  padding: 8px 12px; background: var(--surface);
+  font-family: inherit; line-height: 1.6; resize: vertical;
+  outline: none; transition: border-color 0.15s;
+}
+.edit-input:focus { border-color: rgba(0,0,0,0.3); }
+[data-theme="dark"] .edit-input:focus { border-color: rgba(255,255,255,0.3); }
+
+.points-edit { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+.edit-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 10px; }
+.edit-btn {
+  font-size: 11px; padding: 5px 14px;
+  border-radius: 6px; cursor: pointer; transition: all 0.15s;
+}
+.edit-btn.save { background: var(--text-primary); color: var(--surface); border: none; }
+[data-theme="dark"] .edit-btn.save { color: var(--bg); }
+.edit-btn.save:hover { opacity: 0.8; }
+.edit-btn.reset { background: none; border: 0.5px solid var(--border-mid); color: var(--text-secondary); }
+.edit-btn.reset:hover { border-color: rgba(0,0,0,0.25); }
+[data-theme="dark"] .edit-btn.reset:hover { border-color: rgba(255,255,255,0.25); }
+
+.tag-edit-wrap { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+.tag-edit-input {
+  font-size: 11px; padding: 3px 10px;
+  border: 0.5px solid var(--border-mid); border-radius: 20px;
+  background: none; color: var(--text-secondary); font-family: inherit;
+  outline: none; transition: border-color 0.15s;
+}
+.tag-edit-input:focus { border-color: rgba(0,0,0,0.3); }
+[data-theme="dark"] .tag-edit-input:focus { border-color: rgba(255,255,255,0.3); }
+.tag-edit-input::placeholder { color: var(--text-muted); }
+
+/* BOTTOM BAR */
+.bottom-bar {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: var(--bottom-bg);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border-top: 0.5px solid var(--border);
+  padding: 12px 24px; display: flex; align-items: center; justify-content: center;
+  z-index: 100;
+}
+.bottom-inner {
+  width: 100%; max-width: 720px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.bottom-actions { display: flex; gap: 4px; }
+
+.bottom-btn {
+  font-size: 12px; color: var(--text-tertiary);
+  background: none; border: none; cursor: pointer;
+  padding: 6px 12px; border-radius: 6px;
+  display: flex; align-items: center; gap: 5px; transition: all 0.15s;
+}
+.bottom-btn svg { width: 15px; height: 15px; stroke-width: 1.5; }
+.bottom-btn:hover { background: var(--tag-bg); color: var(--text-secondary); }
+.bottom-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.export-all {
+  font-size: 12px; font-weight: 500;
+  color: var(--surface); background: var(--text-primary);
+  border: none; border-radius: 7px; padding: 7px 18px;
+  cursor: pointer; letter-spacing: 0.02em; transition: opacity 0.15s;
+}
+.export-all:hover { opacity: 0.8; }
+.export-all:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* SETTINGS MODAL */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.4);
+  backdrop-filter: blur(4px);
+  z-index: 200; display: flex;
+  align-items: center; justify-content: center;
+  padding: 24px;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.2s;
+}
+.modal-overlay.show { opacity: 1; pointer-events: auto; }
+
+.modal {
+  background: var(--surface);
+  border: 0.5px solid var(--border);
+  border-radius: 14px;
+  width: 100%; max-width: 480px;
+  max-height: 80vh; overflow-y: auto;
+  box-shadow: var(--card-shadow);
+}
+.modal-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 20px 22px 16px;
+  border-bottom: 0.5px solid var(--border);
+}
+.modal-title { font-size: 14px; font-weight: 500; }
+.modal-close {
+  width: 28px; height: 28px; border: none;
+  background: none; cursor: pointer;
+  border-radius: 6px; color: var(--text-tertiary);
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.15s;
+}
+.modal-close:hover { background: var(--tag-bg); }
+.modal-close svg { width: 16px; height: 16px; }
+
+.modal-body { padding: 20px 22px; }
+
+.form-group { margin-bottom: 16px; }
+.form-label { font-size: 12px; color: var(--text-tertiary); margin-bottom: 6px; display: block; }
+.form-input {
+  width: 100%; font-size: 13px;
+  border: 0.5px solid var(--border-mid); border-radius: 8px;
+  padding: 9px 12px; background: var(--bg);
+  color: var(--text-primary); font-family: inherit;
+  outline: none; transition: border-color 0.15s;
+}
+.form-input:focus { border-color: rgba(0,0,0,0.3); }
+[data-theme="dark"] .form-input:focus { border-color: rgba(255,255,255,0.3); }
+.form-hint { font-size: 11px; color: var(--text-muted); margin-top: 5px; }
+
+.modal-actions { display: flex; gap: 8px; justify-content: flex-end; padding: 16px 22px 20px; border-top: 0.5px solid var(--border); }
+.modal-btn {
+  font-size: 12px; padding: 7px 18px;
+  border-radius: 7px; cursor: pointer; transition: all 0.15s;
+}
+.modal-btn.primary { background: var(--text-primary); color: var(--surface); border: none; }
+[data-theme="dark"] .modal-btn.primary { color: var(--bg); }
+.modal-btn.primary:hover { opacity: 0.8; }
+.modal-btn.secondary { background: none; border: 0.5px solid var(--border-mid); color: var(--text-secondary); }
+.modal-btn.secondary:hover { border-color: rgba(0,0,0,0.25); }
+[data-theme="dark"] .modal-btn.secondary:hover { border-color: rgba(255,255,255,0.25); }
+
+/* TOAST */
+.toast {
+  position: fixed; bottom: 80px; left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  background: var(--text-primary); color: var(--surface);
+  font-size: 12px; padding: 8px 18px; border-radius: 8px;
+  opacity: 0; transition: opacity 0.2s, transform 0.2s;
+  pointer-events: none; z-index: 300;
+  white-space: nowrap;
+}
+[data-theme="dark"] .toast { color: var(--bg); }
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* DATE PICKER */
+.date-nav { display: flex; align-items: center; gap: 8px; }
+.date-display {
+  font-size: 12px; color: var(--text-tertiary);
+  cursor: pointer; padding: 4px 8px;
+  border-radius: 6px; transition: background 0.15s;
+}
+.date-display:hover { background: var(--tag-bg); }
+
+/* RESPONSIVE */
+@media (max-width: 600px) {
+  .page { padding: 0 16px 100px; }
+  .nav { padding: 20px 0 16px; margin-bottom: 20px; }
+  .card-header { padding: 14px 16px; }
+  .card-body { padding: 0 16px 16px; }
+  .bottom-bar { padding: 10px 16px; }
+  .nav-stat { display: none; }
+  .modal { max-width: 100%; border-radius: 14px 14px 0 0; }
+  .modal-actions { border-radius: 0; }
+}
+
+/* NO DATA */
+.no-data {
+  text-align: center; padding: 48px 0;
+  font-size: 13px; color: var(--text-muted);
+}
+
+/* HISTORY VIEW */
+.history-date-btn {
+  font-size: 11px; padding: 3px 8px;
+  border-radius: 6px; cursor: pointer;
+  color: var(--text-tertiary); background: none;
+  border: 0.5px solid var(--border);
+  transition: all 0.15s;
+}
+.history-date-btn:hover { border-color: rgba(0,0,0,0.2); color: var(--text-secondary); }
+.history-date-btn.active { background: var(--text-primary); color: #fff; border-color: var(--text-primary); }
+[data-theme="dark"] .history-date-btn.active { color: var(--bg); }
+</style>
+</head>
+<body>
+
+<div class="page" id="app">
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="nav-brand">
+      <span class="nav-title">新传考研每日热点</span>
+      <span class="nav-date" id="navDate"></span>
+      <span class="nav-stat" id="navStat"></span>
+    </div>
+    <div class="nav-actions">
+      <div class="date-nav">
+        <span class="date-display" id="dateDisplay" title="选择日期">
+          <svg style="width:15px;height:15px;vertical-align:-2px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          <span id="dateDisplayText"></span>
+        </span>
+        <input type="date" id="datePicker" style="position:absolute;opacity:0;pointer-events:none;" max="">
+      </div>
+      <button class="nav-btn" id="btnHistory" title="历史">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      </button>
+      <button class="nav-btn" id="btnTheme" title="暗色模式">
+        <svg id="iconTheme" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+      </button>
+      <button class="nav-btn" id="btnSettings" title="设置">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- API KEY BAR -->
+  <div class="apikey-bar" id="apikeyBar">
+    <svg style="width:14px;height:14px;flex-shrink:0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15 7h2a4 4 0 010 8h-2m-2-4v4m0 0H9m4 0h4"/><rect x="3" y="11" width="18" height="11" rx="2"/></svg>
+    <input type="password" id="apiKeyInput" placeholder="填入 MiniMax API Key，开启 AI 生成（不会上传）" style="flex:1">
+    <button id="saveApiKeyBtn" onclick="saveApiKey()">保存</button>
+    <span class="apikey-status" id="apikeyStatus"></span>
+  </div>
+
+  <!-- FILTER SECTION -->
+  <div class="filter-section">
+    <div class="filter-row" id="platformFilters">
+      <button class="pill active" data-platform="all" onclick="togglePlatform(this)">全部</button>
+      <button class="pill" data-platform="weibo" onclick="togglePlatform(this)">微博</button>
+      <button class="pill" data-platform="zhihu" onclick="togglePlatform(this)">知乎</button>
+      <button class="pill" data-platform="thepaper" onclick="togglePlatform(this)">澎湃</button>
+    </div>
+    <div class="filter-row" id="topicFilters"></div>
+  </div>
+
+  <!-- CONTENT AREA -->
+  <div id="contentArea"></div>
+</div>
+
+<!-- BOTTOM BAR -->
+<div class="bottom-bar" id="bottomBar" style="display:none">
+  <div class="bottom-inner">
+    <div class="bottom-actions">
+      <button class="bottom-btn" onclick="selectAll()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="9,11 12,14 22,4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+        全选
+      </button>
+      <button class="bottom-btn" onclick="copySelected()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+        复制
+      </button>
+      <button class="bottom-btn" onclick="downloadSelected()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        下载
+      </button>
+    </div>
+    <button class="export-all" id="exportAllBtn" onclick="exportMarkdown()">导出 Markdown</button>
+  </div>
+</div>
+
+<!-- SETTINGS MODAL -->
+<div class="modal-overlay" id="settingsModal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">设置</span>
+      <button class="modal-close" onclick="closeModal()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">MiniMax API Key</label>
+        <input type="password" class="form-input" id="modalApiKey" placeholder="sk-...">
+        <div class="form-hint">API Key 仅存储在本地浏览器，不会发送给任何第三方</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">每日前生成数量</label>
+        <input type="number" class="form-input" id="modalDailyCount" min="3" max="10" value="5">
+        <div class="form-hint">每天从各平台生成热点数量，范围 3-10</div>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="modal-btn secondary" onclick="closeModal()">取消</button>
+      <button class="modal-btn primary" onclick="saveSettings()">保存</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ============================================================
+// STATE
+// ============================================================
+const STATE = {
+  apiKey: localStorage.getItem('mjc_apikey') || '',
+  darkMode: localStorage.getItem('mjc_dark') === '1',
+  selectedDate: new Date(),
+  activePlatforms: new Set(['all']),
+  activeTopic: null,
+  newsData: [],        // { id, platform, title, url, rank, ai: null|{知识点,怎么考,案例积累}, edited: false }
+  dailyCount: parseInt(localStorage.getItem('mjc_dailycount')) || 5,
+  isGenerating: false,
+};
+
+// ============================================================
+// INIT
+// ============================================================
+(function init() {
+  applyTheme();
+  updateDateDisplay();
+  renderApiKeyBar();
+  loadNews();
+})();
+
+// ============================================================
+// THEME
+// ============================================================
+function applyTheme() {
+  document.documentElement.dataset.theme = STATE.darkMode ? 'dark' : 'light';
+  const icon = document.getElementById('iconTheme');
+  if (STATE.darkMode) {
+    icon.innerHTML = '<circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>';
+  } else {
+    icon.innerHTML = '<path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>';
+  }
+}
+
+function toggleTheme() {
+  STATE.darkMode = !STATE.darkMode;
+  localStorage.setItem('mjc_dark', STATE.darkMode ? '1' : '0');
+  applyTheme();
+}
+
+// ============================================================
+// DATE
+// ============================================================
+function updateDateDisplay() {
+  const d = STATE.selectedDate;
+  const dateStr = `${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日`;
+  const weekday = ['周日','周一','周二','周三','周四','周五','周六'][d.getDay()];
+  document.getElementById('navDate').textContent = `${dateStr} ${weekday}`;
+  document.getElementById('dateDisplayText').textContent = `${d.getMonth()+1}/${d.getDate()}`;
+
+  const picker = document.getElementById('datePicker');
+  const today = new Date();
+  const thirtyDaysAgo = new Date(today);
+  thirtyDaysAgo.setDate(today.getDate() - 30);
+  picker.min = formatDateStr(thirtyDaysAgo);
+  picker.max = formatDateStr(today);
+  picker.value = formatDateStr(d);
+}
+
+function formatDateStr(d) {
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+
+document.getElementById('dateDisplay').addEventListener('click', () => {
+  document.getElementById('datePicker').showPicker?.() || document.getElementById('datePicker').focus();
+});
+document.getElementById('datePicker').addEventListener('change', (e) => {
+  STATE.selectedDate = new Date(e.target.value + 'T00:00:00');
+  updateDateDisplay();
+  loadNews();
+});
+document.getElementById('dateDisplay').addEventListener('mouseenter', () => {
+  document.getElementById('dateDisplay').style.background = 'var(--tag-bg)';
+});
+document.getElementById('dateDisplay').addEventListener('mouseleave', () => {
+  document.getElementById('dateDisplay').style.background = '';
+});
+
+// ============================================================
+// API KEY
+// ============================================================
+function renderApiKeyBar() {
+  document.getElementById('apiKeyInput').value = STATE.apiKey;
+  updateApiKeyStatus();
+}
+
+function updateApiKeyStatus() {
+  const el = document.getElementById('apikeyStatus');
+  if (STATE.apiKey) {
+    el.textContent = '已保存';
+    el.className = 'apikey-status ok';
+  } else {
+    el.textContent = '';
+    el.className = 'apikey-status';
+  }
+}
+
+function saveApiKey() {
+  const val = document.getElementById('apiKeyInput').value.trim();
+  STATE.apiKey = val;
+  localStorage.setItem('mjc_apikey', val);
+  updateApiKeyStatus();
+  showToast(val ? 'API Key 已保存' : 'API Key 已清除');
+}
+
+// ============================================================
+// NEWS FETCHING
+// ============================================================
+async function loadNews() {
+  const area = document.getElementById('contentArea');
+  area.innerHTML = '<div class="loading-wrap"><div class="loading-spinner"></div>正在加载今日热点...</div>';
+  document.getElementById('bottomBar').style.display = 'none';
+
+  try {
+    const sources = ['weibo', 'zhihu', 'thepaper'];
+    const counts = { weibo: 2, zhihu: 2, thepaper: 1 };
+    const results = [];
+
+    // Fetch all sources in parallel
+    const promises = sources.map(s => fetchSource(s, counts[s]));
+    const settled = await Promise.allSettled(promises);
+
+    for (let i = 0; i < sources.length; i++) {
+      if (settled[i].status === 'fulfilled') {
+        results.push(...settled[i].value.map(item => ({ ...item, platform: sources[i] })));
+      }
+    }
+
+    if (results.length === 0) throw new Error('No data');
+
+    // Shuffle and take top items, preserve platform mix
+    shuffleArray(results);
+    STATE.newsData = results.slice(0, STATE.dailyCount);
+
+    // Load saved edits
+    loadSavedEdits();
+
+    renderCards();
+    renderTopicFilters();
+    updateNavStat();
+    document.getElementById('bottomBar').style.display = 'flex';
+
+  } catch (e) {
+    area.innerHTML = `<div class="error-msg">
+      数据获取失败，请稍后刷新重试
+      <button onclick="loadNews()">重试</button>
+    </div>`;
+  }
+}
+
+async function fetchSource(sourceId, limit) {
+  try {
+    const res = await fetch(`/api/news?id=${sourceId}&limit=${limit}`);
+    if (!res.ok) return [];
+    const json = await res.json();
+    if (!json.items) return [];
+    return json.items.map((item, idx) => ({
+      id: `${sourceId}-${item.id || idx}`,
+      title: item.title,
+      url: item.url || item.mobileUrl || '#',
+      rank: idx + 1,
+      platform: sourceId,
+    }));
+  } catch (e) {
+    return [];
+  }
+}
+
+function shuffleArray(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+}
+
+// ============================================================
+// RENDER CARDS
+// ============================================================
+function renderCards() {
+  const area = document.getElementById('contentArea');
+  const platform = [...STATE.activePlatforms];
+  const topic = STATE.activeTopic;
+
+  const filtered = STATE.newsData.filter(item => {
+    if (!platform.includes('all') && !platform.includes(item.platform)) return false;
+    if (topic && !item.ai?.知识点?.some(t => t.includes(topic))) return false;
+    return true;
+  });
+
+  if (filtered.length === 0) {
+    area.innerHTML = '<div class="no-data">今日暂无符合条件的热点</div>';
+    return;
+  }
+
+  area.innerHTML = filtered.map((item, idx) => {
+    const isExpanded = idx === 0;
+    const platformLabel = { weibo: '微博热榜', zhihu: '知乎热议', thepaper: '澎湃新闻' }[item.platform] || item.platform;
+    const platformRank = item.platform === 'weibo' ? ` #${item.rank}` : '';
+    const tags = item.ai?.知识点 || [];
+    const points = item.ai?.怎么考 || [];
+    const caseText = item.ai?.案例积累 || '';
+    const aiStatus = item.ai ? 'done' : (item._generating ? 'generating' : 'failed');
+
+    return `
+    <div class="card ${isExpanded ? 'expanded' : ''}" id="card-${item.id}" data-platform="${item.platform}">
+      <div class="card-header" onclick="toggleCard('${item.id}')">
+        <div style="display:flex;gap:12px;flex:1;min-width:0;">
+          <div class="card-check ${item._checked ? 'checked' : ''}" onclick="event.stopPropagation();toggleCheck('${item.id}')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>
+          </div>
+          <div style="flex:1;min-width:0;">
+            <div class="card-meta">
+              <span class="rank">${String(idx+1).padStart(2,'0')}</span>
+              <span class="platform">${platformLabel}${platformRank}</span>
+              <span class="ai-badge ${aiStatus}" id="aibadge-${item.id}">
+                ${aiStatus === 'done' ? '✓ AI已生成' : aiStatus === 'generating' ? 'AI生成中...' : '未生成'}
+              </span>
+            </div>
+            <div class="card-title">${escapeHtml(item.title)}</div>
+            <div class="inline-tags">
+              ${tags.map(t => `<span class="inline-tag">${escapeHtml(t)}</span>`).join('')}
+            </div>
+          </div>
+        </div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="card-body">
+        <div class="divider"></div>
+        ${!item.ai && !item._generating ? `
+          <div style="text-align:center;padding:20px 0;">
+            <button class="export-btn" style="font-size:12px;padding:7px 16px;" onclick="generateAI('${item.id}')" ${!STATE.apiKey ? 'disabled title="请先填入API Key"' : ''}>
+              ${STATE.apiKey ? '✨ AI 生成分析' : '🔑 填入API Key后生成'}
+            </button>
+          </div>` : item._generating ? `
+          <div class="loading-wrap"><div class="loading-spinner"></div>AI 生成中，请稍候...</div>` : `
+          <div class="section-label">📚 涉及知识点</div>
+          <div class="tag-edit-wrap" id="tags-${item.id}">
+            ${tags.map((t,i) => `<input class="tag-edit-input" value="${escapeHtml(t)}" data-idx="${i}" onchange="updateTag('${item.id}',${i},this.value)">`).join('')}
+          </div>
+          <div class="section-label">📝 怎么考</div>
+          <div class="points-list">
+            ${points.map((p,i) => `<li class="point-item"><span class="point-num">${i+1}</span><span class="point-text">${escapeHtml(p)}</span></li>`).join('')}
+          </div>
+          <div class="takeaway-box">
+            <div class="takeaway-label">💡 一句话案例积累</div>
+            <div class="takeaway-text">${caseText ? escapeHtml(caseText) : '<span style="color:var(--text-muted)">暂无</span>'}</div>
+          </div>
+        `}
+        <div class="card-footer">
+          <div class="footer-links">
+            <a class="footer-link" href="${item.url}" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              查看原文
+            </a>
+            <span class="footer-link" style="cursor:pointer" onclick="enterEditMode('${item.id}')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+              编辑
+            </span>
+          </div>
+          <button class="export-btn" onclick="exportSingle('${item.id}')">导出此篇</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ============================================================
+// EDIT MODE
+// ============================================================
+function enterEditMode(id) {
+  const item = STATE.newsData.find(n => n.id === id);
+  if (!item || !item.ai) return;
+
+  const card = document.getElementById('card-' + id);
+  if (!card) return;
+
+  const tags = item.ai.知识点 || [];
+  const points = item.ai.怎么考 || [];
+  const caseText = item.ai.案例积累 || '';
+  const ai = item.ai;
+
+  card.querySelector('.card-body').innerHTML = `
+    <div class="divider"></div>
+    <div class="section-label">📚 涉及知识点</div>
+    <div class="tag-edit-wrap">
+      ${tags.map((t, i) => `<input class="tag-edit-input" id="etag-${i}" value="${escapeHtml(t)}" placeholder="添加知识点">`).join('')}
+    </div>
+    <div class="section-label">📝 怎么考</div>
+    <div class="points-edit">
+      ${points.map((p, i) => `<textarea class="edit-input" id="epoint-${i}" rows="2">${escapeHtml(p)}</textarea>`).join('')}
+    </div>
+    <div class="section-label">💡 一句话案例积累</div>
+    <textarea class="edit-input" id="ecase" rows="3">${escapeHtml(caseText)}</textarea>
+    <div class="edit-actions">
+      <button class="edit-btn reset" onclick="resetEdit('${id}')">恢复AI原文</button>
+      <button class="edit-btn save" onclick="saveEdit('${id}')">保存</button>
+    </div>
+  `;
+}
+
+function saveEdit(id) {
+  const item = STATE.newsData.find(n => n.id === id);
+  if (!item) return;
+
+  const tags = [];
+  document.querySelectorAll(`[id^="etag-"]`).forEach(el => {
+    const v = el.value.trim();
+    if (v) tags.push(v);
+  });
+
+  const points = [];
+  for (let i = 0; i < 4; i++) {
+    const el = document.getElementById(`epoint-${i}`);
+    if (el) {
+      const v = el.value.trim();
+      if (v) points.push(v);
+    }
+  }
+
+  const caseText = document.getElementById('ecase')?.value.trim() || '';
+
+  item.ai.知识点 = tags;
+  item.ai.怎么考 = points;
+  item.ai.案例积累 = caseText;
+  item.edited = true;
+
+  persistEdits();
+  renderCards();
+  renderTopicFilters();
+  showToast('保存成功');
+}
+
+function resetEdit(id) {
+  const item = STATE.newsData.find(n => n.id === id);
+  if (!item || !item._originalAi) return;
+
+  item.ai = JSON.parse(JSON.stringify(item._originalAi));
+  item.edited = false;
+  persistEdits();
+  renderCards();
+  renderTopicFilters();
+  showToast('已恢复AI原文');
+}
+
+function updateTag(id, idx, value) {
+  const item = STATE.newsData.find(n => n.id === id);
+  if (!item || !item.ai) return;
+  item.ai.知识点[idx] = value;
+}
+
+// ============================================================
+// PERSIST
+// ============================================================
+function persistEdits() {
+  const dateKey = formatDateStr(STATE.selectedDate);
+  const saved = JSON.parse(localStorage.getItem('mjc_edits') || '{}');
+  if (!saved[dateKey]) saved[dateKey] = {};
+  STATE.newsData.forEach(item => {
+    if (item.edited && item.ai) {
+      saved[dateKey][item.id] = { ai: item.ai };
+    }
+  });
+  localStorage.setItem('mjc_edits', JSON.stringify(saved));
+}
+
+function loadSavedEdits() {
+  const dateKey = formatDateStr(STATE.selectedDate);
+  const saved = JSON.parse(localStorage.getItem('mjc_edits') || '{}')[dateKey] || {};
+  STATE.newsData.forEach(item => {
+    if (saved[item.id]) {
+      item._originalAi = item.ai ? JSON.parse(JSON.stringify(item.ai)) : null;
+      item.ai = saved[item.id].ai;
+      item.edited = true;
+    } else if (item.ai) {
+      item._originalAi = JSON.parse(JSON.stringify(item.ai));
+    }
+  });
+}
+
+// ============================================================
+// FILTERS
+// ============================================================
+function togglePlatform(el) {
+  const platform = el.dataset.platform;
+  if (platform === 'all') {
+    STATE.activePlatforms = new Set(['all']);
+    document.querySelectorAll('#platformFilters .pill').forEach(p => p.classList.remove('active'));
+    el.classList.add('active');
+  } else {
+    document.querySelector('#platformFilters .pill[data-platform="all"]').classList.remove('active');
+    if (STATE.activePlatforms.has('all')) STATE.activePlatforms = new Set();
+    if (STATE.activePlatforms.has(platform)) {
+      STATE.activePlatforms.delete(platform);
+    } else {
+      STATE.activePlatforms.add(platform);
+    }
+    if (STATE.activePlatforms.size === 0) {
+      STATE.activePlatforms = new Set(['all']);
+      document.querySelector('#platformFilters .pill[data-platform="all"]').classList.add('active');
+    }
+    document.querySelectorAll('#platformFilters .pill').forEach(p => {
+      p.classList.toggle('active', STATE.activePlatforms.has(p.dataset.platform));
+    });
+  }
+  renderCards();
+}
+
+function renderTopicFilters() {
+  const allTopics = new Set();
+  STATE.newsData.forEach(item => {
+    (item.ai?.知识点 || []).forEach(t => allTopics.add(t));
+  });
+
+  const row = document.getElementById('topicFilters');
+  if (allTopics.size === 0) {
+    row.innerHTML = '';
+    return;
+  }
+
+  const topics = [...allTopics];
+  row.innerHTML = topics.slice(0, 8).map(t =>
+    `<button class="pill topic ${STATE.activeTopic === t ? 'active' : ''}" onclick="toggleTopicFilter(this,'${escapeHtml(t)}')">${escapeHtml(t)}</button>`
+  ).join('');
+
+  if (topics.length > 8) {
+    row.innerHTML += `<button class="pill topic has-more">+${topics.length - 8}</button>`;
+  }
+}
+
+function toggleTopicFilter(el, topic) {
+  if (STATE.activeTopic === topic) {
+    STATE.activeTopic = null;
+    el.classList.remove('active');
+  } else {
+    document.querySelectorAll('#topicFilters .pill.topic').forEach(p => p.classList.remove('active'));
+    STATE.activeTopic = topic;
+    el.classList.add('active');
+  }
+  renderCards();
+}
+
+// ============================================================
+// CARD TOGGLES
+// ============================================================
+function toggleCard(id) {
+  const card = document.getElementById('card-' + id);
+  if (!card) return;
+  const was = card.classList.contains('expanded');
+  document.querySelectorAll('.card.expanded').forEach(c => c.classList.remove('expanded'));
+  if (!was) card.classList.add('expanded');
+}
+
+function toggleCheck(id) {
+  const item = STATE.newsData.find(n => n.id === id);
+  if (!item) return;
+  item._checked = !item._checked;
+  const check = document.querySelector(`#card-${id} .card-check`);
+  if (check) check.classList.toggle('checked', item._checked);
+}
+
+// ============================================================
+// SELECT ALL
+// ============================================================
+function selectAll() {
+  const allChecked = STATE.newsData.every(n => n._checked);
+  STATE.newsData.forEach(n => { n._checked = !allChecked; });
+  document.querySelectorAll('.card-check').forEach(c => {
+    const id = c.closest('.card').id.replace('card-','');
+    const item = STATE.newsData.find(n => n.id === id);
+    c.classList.toggle('checked', item?._checked);
+  });
+}
+
+// ============================================================
+// EXPORT MARKDOWN
+// ============================================================
+function generateMarkdown(items) {
+  const dateStr = `${STATE.selectedDate.getFullYear()}年${STATE.selectedDate.getMonth()+1}月${STATE.selectedDate.getDate()}日`;
+  const lines = [`# ${dateStr} 新传考研每日热点`, ''];
+
+  items.forEach((item, idx) => {
+    const platformLabel = { weibo: '微博热榜', zhihu: '知乎热议', thepaper: '澎湃新闻' }[item.platform] || item.platform;
+    lines.push(`## 【${idx+1}】${item.title}`);
+    lines.push(`> 来源：${platformLabel} | [查看原文](${item.url})`);
+    lines.push('');
+
+    if (item.ai?.知识点?.length) {
+      lines.push('### 📚 涉及知识点');
+      item.ai.知识点.forEach(t => lines.push(`- ${t}`));
+      lines.push('');
+    }
+
+    if (item.ai?.怎么考?.length) {
+      lines.push('### 📝 怎么考');
+      item.ai.怎么考.forEach((p, i) => lines.push(`${i+1}. ${p}`));
+      lines.push('');
+    }
+
+    if (item.ai?.案例积累) {
+      lines.push('### 💡 一句话案例积累');
+      lines.push(`- ${item.ai.案例积累}`);
+      lines.push('');
+    }
+  });
+
+  return lines.join('\n');
+}
+
+function exportMarkdown() {
+  const checked = STATE.newsData.filter(n => n._checked && n.ai);
+  const items = checked.length > 0 ? checked : STATE.newsData.filter(n => n.ai);
+  if (items.length === 0) { showToast('没有可导出的内容'); return; }
+  const md = generateMarkdown(items);
+  copyToClipboard(md);
+  showToast(`已复制 ${items.length} 条到剪贴板`);
+}
+
+function exportSingle(id) {
+  const item = STATE.newsData.find(n => n.id === id);
+  if (!item) return;
+  if (!item.ai) { showToast('请先生成AI分析'); return; }
+  const md = generateMarkdown([item]);
+  copyToClipboard(md);
+  showToast('已复制到剪贴板');
+}
+
+function copySelected() {
+  const items = STATE.newsData.filter(n => n._checked && n.ai);
+  if (items.length === 0) { showToast('请先勾选要复制的内容'); return; }
+  copyToClipboard(generateMarkdown(items));
+  showToast(`已复制 ${items.length} 条到剪贴板`);
+}
+
+function downloadSelected() {
+  const checked = STATE.newsData.filter(n => n._checked && n.ai);
+  const items = checked.length > 0 ? checked : STATE.newsData.filter(n => n.ai);
+  if (items.length === 0) { showToast('没有可下载的内容'); return; }
+  const md = generateMarkdown(items);
+  const blob = new Blob([md], { type: 'text/markdown' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  const dateStr = `${STATE.selectedDate.getFullYear()}${String(STATE.selectedDate.getMonth()+1).padStart(2,'0')}${String(STATE.selectedDate.getDate()).padStart(2,'0')}`;
+  a.download = `mjc_daily_${dateStr}.md`;
+  a.click();
+  showToast('下载成功');
+}
+
+function copyToClipboard(text) {
+  navigator.clipboard.writeText(text).catch(() => {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+  });
+}
+
+// ============================================================
+// AI GENERATION
+// ============================================================
+const AI_SYSTEM_PROMPT = `你是一位新传考研辅导专家，熟悉北大新传考研出题风格与高频考点。每次收到一条新闻热点，按以下格式输出分析，严格遵守评判标准。
+
+输出格式：
+涉及知识点：（精准、专业、不超纲，优先使用新传核心概念，不超过5个）
+怎么考：（4个论点，按隐含逻辑展开：1.界定本质 2.结构性成因 3.深层影响 4.应对路径。需具备知识迁移能力，有辩证张力）
+一句话案例积累：（格式：【核心观点】，如/以XX事件为例，【事件与理论的具体关联】，直接可用于答题）
+
+过滤标准：纯娱乐八卦、明星私生活、体育赛事结果、与公共议题无关的社会新闻直接跳过不输出。
+合格内容：涉及公共议题、政策变化、技术发展、社会结构性事件。`;
+
+const AI_USER_PROMPT = `热点：{title}
+
+请按以下格式输出：
+涉及知识点
+怎么考
+一句话案例积累`;
+
+async function generateAI(id) {
+  const item = STATE.newsData.find(n => n.id === id);
+  if (!item || !STATE.apiKey) return;
+
+  item._generating = true;
+  renderCards();
+
+  try {
+    const response = await fetch('https://api.minimaxi.chat/v1/text/chatcompletion_v2', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${STATE.apiKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: 'MiniMax-M2.7',
+        messages: [
+          { role: 'system', content: AI_SYSTEM_PROMPT },
+          { role: 'user', content: AI_USER_PROMPT.replace('{title}', item.title) },
+        ],
+        max_tokens: 1500,
+        temperature: 0.7,
+      }),
+    });
+
+    const text = await response.text();
+    let data;
+    try { data = JSON.parse(text); } catch { throw new Error('响应格式错误: ' + text.substring(0, 100)); }
+
+    if (!response.ok) throw new Error(data.error?.message || `API错误 ${response.status}`);
+
+    // MiniMax uses output, standard OpenAI uses choices
+    const rawContent = data.choices?.[0]?.message?.content || data.output || '';
+    if (!rawContent) throw new Error('无内容返回: ' + JSON.stringify(data).substring(0, 200));
+
+    const parsed = parseAIContent(rawContent);
+
+    item.ai = parsed;
+    item._originalAi = JSON.parse(JSON.stringify(parsed));
+    item.edited = false;
+    item._generating = false;
+    persistEdits();
+    renderCards();
+    renderTopicFilters();
+    updateNavStat();
+    showToast('AI生成成功');
+  } catch (e) {
+    item._generating = false;
+    persistEdits();
+    renderCards();
+    showToast('AI生成失败: ' + e.message);
+  }
+}
+
+async function generateAllAI() {
+  if (!STATE.apiKey) { showToast('请先填入API Key'); return; }
+  for (const item of STATE.newsData.filter(n => !n.ai && !n._generating)) {
+    await generateAI(item.id);
+    await new Promise(r => setTimeout(r, 800));
+  }
+}
+
+function parseAIContent(content) {
+  const result = { 知识点: [], 怎么考: [], 案例积累: '' };
+
+  // 匹配"涉及知识点"部分：到"怎么考"之前
+  const kSection = content.match(/涉及知识点[:：]?([\s\S]*?)(?=怎么考)/i);
+  if (kSection) {
+    const raw = kSection[1];
+    result.知识点 = raw.split(/[\n]/)
+      .map(s => s.replace(/^[-*·\s]+/, '').trim())
+      .filter(s => s && s.length > 1 && s.length < 30)
+      .slice(0, 5);
+  }
+
+  // 匹配"怎么考"部分：到"一句话案例积累"之前
+  const pSection = content.match(/怎么考[:：]?([\s\S]*?)(?=一句话案例积累)/i);
+  if (pSection) {
+    const lines = pSection[1].split(/\n/)
+      .map(s => s.replace(/^\d+[.、：:：]\s*/, '').trim())
+      .filter(s => s && s.length > 5);
+    result.怎么考 = lines.slice(0, 4);
+  }
+
+  // 匹配"一句话案例积累"
+  const cSection = content.match(/一句话案例积累[:：]?\n*([\s\S]*)$/i);
+  if (cSection) {
+    result.案例积累 = cSection[1].replace(/^[-*·\s]+/, '').trim();
+  }
+
+  // Fallbacks
+  if (result.知识点.length === 0) result.知识点 = ['待补充'];
+  if (result.怎么考.length === 0) result.怎么考 = ['待补充'];
+
+  return result;
+}
+
+// ============================================================
+// SETTINGS MODAL
+// ============================================================
+function openModal() {
+  document.getElementById('modalApiKey').value = STATE.apiKey;
+  document.getElementById('modalDailyCount').value = STATE.dailyCount;
+  document.getElementById('settingsModal').classList.add('show');
+}
+function closeModal() {
+  document.getElementById('settingsModal').classList.remove('show');
+}
+function saveSettings() {
+  const key = document.getElementById('modalApiKey').value.trim();
+  STATE.apiKey = key;
+  localStorage.setItem('mjc_apikey', key);
+  STATE.dailyCount = Math.min(10, Math.max(3, parseInt(document.getElementById('modalDailyCount').value) || 5));
+  localStorage.setItem('mjc_dailycount', STATE.dailyCount);
+  updateApiKeyStatus();
+  renderApiKeyBar();
+  closeModal();
+  showToast('设置已保存');
+}
+
+// ============================================================
+// UTILS
+// ============================================================
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function updateNavStat() {
+  const totalTags = new Set();
+  STATE.newsData.forEach(item => (item.ai?.知识点 || []).forEach(t => totalTags.add(t)));
+  const done = STATE.newsData.filter(n => n.ai).length;
+  document.getElementById('navStat').textContent = STATE.newsData.length > 0
+    ? `· ${done}/${STATE.newsData.length} 条已生成 · ${totalTags.size} 个知识点`
+    : '';
+}
+
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2000);
+}
+
+// ============================================================
+// EVENT BINDINGS
+// ============================================================
+document.getElementById('btnTheme').addEventListener('click', toggleTheme);
+document.getElementById('btnSettings').addEventListener('click', openModal);
+document.getElementById('btnHistory').addEventListener('click', () => {
+  document.getElementById('datePicker').showPicker?.() || document.getElementById('datePicker').focus();
+});
+
+document.getElementById('settingsModal').addEventListener('click', (e) => {
+  if (e.target === e.currentTarget) closeModal();
+});
+
+// Enter key in API Key input
+document.getElementById('apiKeyInput').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') saveApiKey();
+});
+</script>
+</body>
+</html>
