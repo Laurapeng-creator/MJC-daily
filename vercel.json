@@ -1,9 +1,0 @@
-{
-  "version": 2,
-  "functions": {
-    "api/load.js": { "runtime": "nodejs20.x" },
-    "api/generate.js": { "runtime": "nodejs20.x" },
-    "api/check.js": { "runtime": "nodejs20.x" },
-    "api/news.js": { "runtime": "nodejs20.x" }
-  }
-}
